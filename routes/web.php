@@ -14,6 +14,7 @@ Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
 Route::get('/posts/{uuid}/edit', [PostController::class, 'edit'])->name('posts.edit');
 Route::put('/posts/{uuid}', [PostController::class, 'update'])->name('posts.update');
 Route::delete('/posts/{uuid}', [PostController::class, 'destroy'])->name('posts.destroy');
+Route::patch('/posts/{uuid}/restore', [PostController::class, 'restore'])->name('posts.restore');
 Route::get('/posts/{post:uuid}/ajax', function (Post $post) {
     return response()->json($post);
 });

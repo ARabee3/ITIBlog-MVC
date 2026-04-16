@@ -11,7 +11,7 @@ class PostController extends Controller
 {
   public function index()
   {
-    $posts = Post::orderByDesc('created_at')->paginate(12);;
+    $posts = Post::withTrashed()->orderByDesc('created_at')->paginate(12);
 
     return view('posts.index', compact('posts'));
   }
@@ -68,6 +68,14 @@ class PostController extends Controller
     $post = Post::where('uuid', $uuid)->firstOrFail();
     $post->delete();
 
-    return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
+    return redirect()->route('posts.index')->with('success', 'Post moved to trash successfully.');
+  }
+
+  public function restore(string $uuid)
+  {
+    $post = Post::withTrashed()->where('uuid', $uuid)->firstOrFail();
+    $post->restore();
+
+    return redirect()->route('posts.index')->with('success', 'Post restored successfully.');
   }
 }
