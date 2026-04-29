@@ -23,7 +23,9 @@
                     <table class="min-w-full divide-y-2 divide-gray-200">
                         <thead class="ltr:text-left rtl:text-right">
                             <tr class="*:font-medium *:text-gray-900">
+                                <th class="px-3 py-2 whitespace-nowrap">Image</th>
                                 <th class="px-3 py-2 whitespace-nowrap">Title</th>
+                                <th class="px-3 py-2 whitespace-nowrap">Slug</th>
                                 <th class="px-3 py-2 whitespace-nowrap">Content</th>
                                 <th class="px-3 py-2 whitespace-nowrap">Type</th>
                                 <th class="px-3 py-2 whitespace-nowrap">Status</th>
@@ -35,8 +37,16 @@
                         <tbody class="divide-y divide-gray-200">
                             @forelse ($posts as $post)
                                 <tr class="*:text-gray-900 *:first:font-medium">
+                                    <td class="px-3 py-2 whitespace-nowrap">
+                                        @if($post->image)
+                                            <img src="{{ Storage::url($post->image) }}" alt="Thumbnail" class="w-12 h-12 object-cover rounded">
+                                        @else
+                                            <span class="text-gray-400 text-xs">No image</span>
+                                        @endif
+                                    </td>
                                     <td class="px-3 py-2 whitespace-nowrap">{{ $post->title }}</td>
-                                    <td class="px-3 py-2 whitespace-nowrap">{{ $post->content }}</td>
+                                    <td class="px-3 py-2 whitespace-nowrap">{{ $post->slug ?? '-' }}</td>
+                                    <td class="px-3 py-2 whitespace-nowrap">{{ Str::limit($post->content, 30) }}</td>
                                     <td class="px-3 py-2 whitespace-nowrap">{{ $post->type }}</td>
                                     <td class="px-3 py-2 whitespace-nowrap">
                                         @if ($post->trashed())
@@ -51,6 +61,10 @@
 
                                     <td class="px-3 py-2 whitespace-nowrap">
                                         <div class="flex items-center gap-2">
+
+                                            <x-button type="primary" href="{{ route('posts.show', $post->uuid) }}">
+                                                Comments
+                                            </x-button>
 
                                             <post-view-modal post-id="{{ $post->uuid }}"></post-view-modal>
 
@@ -109,7 +123,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="px-3 py-6 text-center text-sm text-gray-500">
+                                    <td colspan="8" class="px-3 py-6 text-center text-sm text-gray-500">
                                         No posts yet.
                                     </td>
                                 </tr>

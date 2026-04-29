@@ -7,7 +7,7 @@
         <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
             <h1 class="mb-6 text-2xl font-bold text-gray-900">Create Post</h1>
 
-            <form action="{{ route('posts.store') }}" method="POST" class="space-y-4">
+            <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
                 @csrf
 
                 <div>
@@ -33,6 +33,15 @@
                     <input id="type" name="type" type="text" value="{{ old('type') }}"
                         class="w-full rounded-md border-gray-300 text-sm shadow-xs">
                     @error('type')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="image" class="mb-1 block text-sm font-medium text-gray-700">Image</label>
+                    <input id="image" name="image" type="file"
+                        class="w-full rounded-md border-gray-300 text-sm shadow-xs">
+                    @error('image')
                         <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
